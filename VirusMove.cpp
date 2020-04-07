@@ -56,11 +56,11 @@ class_human::class_human(int PullElemet){
   this->InfectedFlag=-256;
   this->AlreadyInfectedFlag=0;
 }
-
+int PeopleNum,PeopleElement;
 
 int main() {
 srand((unsigned int)time(NULL));
-  int PeopleNum,PeopleElement;
+
   SetGraphMode( 640 , 480 , 16 );
   cout << "Set number of people\n";
   cin >> PeopleNum ;
@@ -88,7 +88,7 @@ SetDrawScreen( DX_SCREEN_BACK );
       setupflag=1;
 
     }else{
-      cout <<"SpeedX:" <<human[PeopleElement].speed[0] <<" SpeedY:" <<human[PeopleElement].speed[1] <<"\n AxisX" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <<"\n";
+      cout <<"SpeedX:" <<human[PeopleElement].speed[0] <<" SpeedY:" <<human[PeopleElement].speed[1] <<"\n AxisX" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <</*"\n" << "Number of Infected People " << InfectedAxis.size() <<*/ "\n\n";
 
       ClearDrawScreen();
       for(int i=0;i<=PeopleNum-20;i++){
@@ -101,12 +101,13 @@ SetDrawScreen( DX_SCREEN_BACK );
 
         //DrawGraph(human[i].Axis[0] ,human[i].Axis[1],humanhandle, FALSE ) ;
 if(human[i].InfectedFlag<=-256||human[i].InfectedFlag>=256){
-      DrawPixel(human[i].Axis[0] ,human[i].Axis[1],GetColor(0,255,0));
+      //DrawPixel(human[i].Axis[0] ,human[i].Axis[1],GetColor(0,255,0));
+      DrawBox(human[i].Axis[0] ,human[i].Axis[1],human[i].Axis[0]+3 ,human[i].Axis[1]+3,GetColor(0,255,0),true) ;
       if(i==PeopleElement)
       DrawBox(0,0,20,20,GetColor(0,255,0),true) ;
 }else{
-
-        DrawPixel(human[i].Axis[0] ,human[i].Axis[1],GetColor(-1*abs(human[i].InfectedFlag)+255,abs(human[i].InfectedFlag),0));
+DrawBox(human[i].Axis[0] ,human[i].Axis[1],human[i].Axis[0]+3 ,human[i].Axis[1]+3,GetColor(-1*abs(human[i].InfectedFlag)+255,abs(human[i].InfectedFlag),0),true) ;
+        //DrawPixel(human[i].Axis[0] ,human[i].Axis[1],GetColor(-1*abs(human[i].InfectedFlag)+255,abs(human[i].InfectedFlag),0));
         if(i==PeopleElement)
         DrawBox(0,0,20,20,GetColor(-1*abs(human[i].InfectedFlag)+255,abs(human[i].InfectedFlag),0),true) ;
       }
@@ -119,6 +120,11 @@ if(human[i].InfectedFlag<=-256||human[i].InfectedFlag>=256){
 
 void class_human::virusupdate(){
   if(InfectedFlag>=-255&&InfectedFlag<=255){
+    if(InfectedFlag==255&&element<=PeopleNum-40){
+      map<int,_Axis>::iterator itr = InfectedAxis.find(element+1);
+      cout << "Number" << element << "has fully recovered\n";
+      InfectedAxis.erase(itr);
+    }
     InfectedFlag++;
     //InfectedAxis[element][0]=Axis[0];
     //InfectedAxis[element][1]=Axis[1];
@@ -126,10 +132,12 @@ void class_human::virusupdate(){
 
   }
   else{
-
+ if(InfectedAxis.size()>0){
     for(map<int,_Axis>::iterator itr = InfectedAxis.begin();itr!=InfectedAxis.end();++itr){
     int LocalInfectedAxis[2]={itr->second.Axis[0],itr->second.Axis[1]};
       if(Distance(Axis,LocalInfectedAxis)<3)givevirus();
     }
   }
+
+}
 }
