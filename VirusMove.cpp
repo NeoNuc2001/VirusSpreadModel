@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <time.h>
+#include <math.h>
 
 /*
 random_device rnd;     //
@@ -22,6 +23,8 @@ public:
   void setspeed(){if(speed[0]+Acell[0]>=-5&&speed[0]+Acell[0]<=5)speed[0]+=Acell[0];if(speed[1]+Acell[1]>=-5&&speed[1]+Acell[1]<=5)speed[1]+=Acell[1];};
   void setAcell(){if(Axis[0]<=0)Acell[0]=rand()%3;else if(Axis[0]>=630)Acell[0]=rand()%3-2;else Acell[0]=rand()%3-1;if(Axis[1]<=0)Acell[1]=rand()%3; else if(Axis[1]>=470)Acell[1]=rand()%3-2;else Acell[1]=rand()%3-1;};
   void setAxis(){Axis[0]+=speed[0];Axis[1]+=speed[1];};
+  void givevirus(){InfectedFlag=-255;AlreadyInfectedFlag=1;}
+  void virusupdate(){if(InfectedFlag>=-255&&InfectedFlag<=255)InfectedFlag++;};
   void setAll(){setAcell();setspeed();setAxis();}
   class_human();
 };
@@ -32,7 +35,7 @@ class_human::class_human(){
   Axis[0]=rand()%640;
   Axis[1]=rand()%480;
   //cout << "X:" << this->Axis[0] <<"Y:" << this->Axis[1];
-  this->InfectedFlag=0;
+  this->InfectedFlag=-256;
   this->AlreadyInfectedFlag=0;
 }
 
@@ -62,6 +65,7 @@ SetDrawScreen( DX_SCREEN_BACK );
         //Y_Axis.push_back(rand480(rand_mt));
         //X_Axis.push_back(rand640(rand_mt));
       }
+      human[PeopleElement].givevirus();
       setupflag=1;
 
     }else{
@@ -72,10 +76,21 @@ SetDrawScreen( DX_SCREEN_BACK );
 
 
         human[i].setAll();
+        human[i].virusupdate();
+
+
 
         //DrawGraph(human[i].Axis[0] ,human[i].Axis[1],humanhandle, FALSE ) ;
+if(human[i].InfectedFlag<=-256||human[i].InfectedFlag>=256){
       DrawPixel(human[i].Axis[0] ,human[i].Axis[1],GetColor(0,255,0));
-
+      if(i==PeopleElement)
+      DrawBox(0,0,20,20,GetColor(0,255,0),true) ;
+}else{
+  #line 1
+        DrawPixel(human[i].Axis[0] ,human[i].Axis[1],GetColor(-1*abs(human[i].InfectedFlag)+255,abs(human[i].InfectedFlag),0));
+        if(i==PeopleElement)
+        DrawBox(0,0,20,20,GetColor(-1*abs(human[i].InfectedFlag)+255,abs(human[i].InfectedFlag),0),true) ;
+      }
 
       }
       ScreenFlip();
