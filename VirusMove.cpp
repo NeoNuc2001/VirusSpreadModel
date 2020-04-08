@@ -28,8 +28,21 @@ float Distance(int first_Axis[2],int second_Axis[2]);
 float Distance(int first_Axis[2],int second_Axis[2]){
   return sqrt((float)(pow(first_Axis[0]-second_Axis[0],2)+pow(first_Axis[1]-second_Axis[1],2)));
 }
+class class_human_stat{
+public:
+  int home[2];
+  bool StayHomeFlag;
+  bool LifeFlag;
+public:
+  class_human_stat();
+};
+
+class_human_stat::class_human_stat(){
+  LifeFlag=1;
+}
 class class_human{
 public:
+  class_human_stat human_stat;
   int element;
   int Axis[2];
   int speed[2];
@@ -42,10 +55,20 @@ public:
   void setAxis(){Axis[0]+=speed[0];Axis[1]+=speed[1];};
   void givevirus(){if(AlreadyInfectedFlag!=1)InfectedFlag=-255;AlreadyInfectedFlag=1;}
   void virusupdate();
-  void setAll(){setAcell();setspeed();setAxis();}
+  void setAll(){if(human_stat.LifeFlag!=0){setAcell();setspeed();setAxis();}}
   class_human(int PullElemet);
 };
+bool SeriousCheck();
+bool LifeCheck();
 using namespace std;
+bool LifeCheck(){//年齢に応じて変える予定
+  if(rand()%501<7)return 0;
+  else return 1;
+}
+bool SeriousCheck(){//年齢に応じて変える予定
+  if(rand()%11>8)return 1;
+  else return 0;
+}
 class_human::class_human(int PullElemet){
   element=PullElemet;
   speed[0]=rand()%6-3;
@@ -56,7 +79,7 @@ class_human::class_human(int PullElemet){
   this->InfectedFlag=-256;
   this->AlreadyInfectedFlag=0;
 }
-int PeopleNum,PeopleElement;
+int PeopleNum,PeopleElement,DeathCount,SeriousCount;
 
 int main() {
 srand((unsigned int)time(NULL));
@@ -88,7 +111,10 @@ SetDrawScreen( DX_SCREEN_BACK );
       setupflag=1;
 
     }else{
-      cout <<"SpeedX:" <<human[PeopleElement].speed[0] <<" SpeedY:" <<human[PeopleElement].speed[1] <<"\n AxisX" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <<"\n" << "Number of Infected People " << InfectedAxis.size() << "\n\n";
+      cout <<"SpeedX:" <<human[PeopleElement].speed[0] <<" SpeedY:" <<human[PeopleElement].speed[1] <<
+        "\n AxisX:" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <<"\n"
+        << "Number of Infected People:" << InfectedAxis.size() <<
+        "\n Serious count:" << SeriousCount << " Death Count:" << DeathCount <<"\n\n";
 
       ClearDrawScreen();
       DrawBox(0,0,640,480,GetColor(215,215,215),true);
@@ -117,12 +143,23 @@ DrawBox(human[i].Axis[0] ,human[i].Axis[1],human[i].Axis[0]+3 ,human[i].Axis[1]+
       ScreenFlip();
     }
   }
+  DxLib_End();
 }
 
 void class_human::virusupdate(){
   if(InfectedFlag>=-255&&InfectedFlag<=255){
       InfectedAxis[element]=Axis;
-    if(InfectedFlag==255){
+    if(InfectedFlag==-100){
+      if(!SeriousCheck())InfectedFlag=99;
+      else SeriousCount++;
+    }
+    else if(InfectedFlag==0){
+      if(!LifeCheck()){human_stat.LifeFlag=0;DeathCount++;}
+    }
+    else if(InfectedFlag==99){
+      SeriousCount--;
+    }
+    else if(InfectedFlag==255){
 
       map<int,_Axis>::iterator itr = InfectedAxis.find(element);
       cout << "Number:" << element << " has fully recovered\n";
@@ -130,6 +167,7 @@ void class_human::virusupdate(){
       //delete InfectedAxis[element];
       //InfectedAxis.shrink_to_fit();
     }
+    if(human_stat.LifeFlag!=0)
     InfectedFlag++;
     //InfectedAxis[element][0]=Axis[0];
     //InfectedAxis[element][1]=Axis[1];
@@ -137,7 +175,7 @@ void class_human::virusupdate(){
 
   }
   else{
- if(InfectedAxis.size()>0&&AlreadyInfectedFlag==0){//消えない　Pullしてデバックメッセージを足してみればわかると思う
+ if(!InfectedAxis.empty()&&AlreadyInfectedFlag==0){//消えない　Pullしてデバックメッセージを足してみればわかると思う
     for(map<int,_Axis>::iterator itr = InfectedAxis.begin();itr!=InfectedAxis.end();++itr){
     int LocalInfectedAxis[2]={itr->second.Axis[0],itr->second.Axis[1]};
       if(Distance(Axis,LocalInfectedAxis)<3)givevirus();
