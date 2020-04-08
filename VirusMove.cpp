@@ -124,7 +124,7 @@ void class_human::virusupdate(){
 
       map<int,_Axis>::iterator itr = InfectedAxis.find(element);
       cout << "Number" << element << "has fully recovered\n";
-      InfectedAxis.erase(itr);
+      InfectedAxis.erase(itr); //ここで消してくれるはずだが
     }
     InfectedFlag++;
     //InfectedAxis[element][0]=Axis[0];
@@ -133,7 +133,7 @@ void class_human::virusupdate(){
 
   }
   else{
- if(InfectedAxis.size()>0&&AlreadyInfectedFlag==0){
+ if(InfectedAxis.size()>0&&AlreadyInfectedFlag==0){//消えない　Pullしてデバックメッセージを足してみればわかると思う
     for(map<int,_Axis>::iterator itr = InfectedAxis.begin();itr!=InfectedAxis.end();++itr){
     int LocalInfectedAxis[2]={itr->second.Axis[0],itr->second.Axis[1]};
       if(Distance(Axis,LocalInfectedAxis)<3)givevirus();
