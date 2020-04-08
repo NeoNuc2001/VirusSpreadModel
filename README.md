@@ -21,6 +21,7 @@ then Dxlib opens new window and starts the simulation
  i)How to look
    each AI's box color shows thier symptoms(not how healthy it is). More green less symptoms and more red more symptoms
    left top shows first infected AI's box color
+   
  ii)How AI works
    all AIs are moving and acting randomly but has some same pattern
      1.When an healthy AI is near(less than 3 pixels) Infected AI , it will also get Infected.
