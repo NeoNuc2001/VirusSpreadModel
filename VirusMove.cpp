@@ -121,7 +121,8 @@ DrawBox(human[i].Axis[0] ,human[i].Axis[1],human[i].Axis[0]+3 ,human[i].Axis[1]+
 void class_human::virusupdate(){
   if(InfectedFlag>=-255&&InfectedFlag<=255){
     if(InfectedFlag==255&&element<=PeopleNum-40){
-      map<int,_Axis>::iterator itr = InfectedAxis.find(element+1);
+    
+      map<int,_Axis>::iterator itr = InfectedAxis.find(element);
       cout << "Number" << element << "has fully recovered\n";
       InfectedAxis.erase(itr);
     }
@@ -132,7 +133,7 @@ void class_human::virusupdate(){
 
   }
   else{
- if(InfectedAxis.size()>0){
+ if(InfectedAxis.size()>0&&AlreadyInfectedFlag==0){
     for(map<int,_Axis>::iterator itr = InfectedAxis.begin();itr!=InfectedAxis.end();++itr){
     int LocalInfectedAxis[2]={itr->second.Axis[0],itr->second.Axis[1]};
       if(Distance(Axis,LocalInfectedAxis)<3)givevirus();
