@@ -112,9 +112,10 @@ SetDrawScreen( DX_SCREEN_BACK );
 
     }else{
       cout <<"SpeedX:" <<human[PeopleElement].speed[0] <<" SpeedY:" <<human[PeopleElement].speed[1] <<
-        "\n AxisX:" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <<"\n"
+        "\nAxisX:" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <<"\n"
+        <<"InfectedFlag:" <<human[PeopleElement].InfectedFlag << "\n"
         << "Number of Infected People:" << InfectedAxis.size() <<
-        "\n Serious count:" << SeriousCount << " Death Count:" << DeathCount <<"\n\n";
+        "\nSerious count:" << SeriousCount << " Death Count:" << DeathCount <<"\n\n";
 
       ClearDrawScreen();
       DrawBox(0,0,640,480,GetColor(215,215,215),true);
@@ -153,7 +154,7 @@ void class_human::virusupdate(){
       if(!SeriousCheck())InfectedFlag=99;
       else SeriousCount++;
     }
-    else if(InfectedFlag==0){
+    else if(InfectedFlag==0&&human_stat.LifeFlag!=0){
       if(!LifeCheck()){human_stat.LifeFlag=0;DeathCount++;}
     }
     else if(InfectedFlag==99){
@@ -175,7 +176,7 @@ void class_human::virusupdate(){
 
   }
   else{
- if(!InfectedAxis.empty()&&AlreadyInfectedFlag==0){//消えない　Pullしてデバックメッセージを足してみればわかると思う
+ if(!InfectedAxis.empty()||AlreadyInfectedFlag==0){//消えない　Pullしてデバックメッセージを足してみればわかると思う
     for(map<int,_Axis>::iterator itr = InfectedAxis.begin();itr!=InfectedAxis.end();++itr){
     int LocalInfectedAxis[2]={itr->second.Axis[0],itr->second.Axis[1]};
       if(Distance(Axis,LocalInfectedAxis)<3)givevirus();
