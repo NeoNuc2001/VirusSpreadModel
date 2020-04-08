@@ -64,7 +64,7 @@ srand((unsigned int)time(NULL));
   SetGraphMode( 640 , 480 , 16 );
   cout << "Set number of people\n";
   cin >> PeopleNum ;
-  cout << "Set Human to watch\n";
+  cout << "Set Human to watch( and to be infected)\n";
   cin >>  PeopleElement;
   ChangeWindowMode(TRUE);
   	if( DxLib_Init() == -1 )		//
@@ -88,10 +88,11 @@ SetDrawScreen( DX_SCREEN_BACK );
       setupflag=1;
 
     }else{
-      cout <<"SpeedX:" <<human[PeopleElement].speed[0] <<" SpeedY:" <<human[PeopleElement].speed[1] <<"\n AxisX" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <</*"\n" << "Number of Infected People " << InfectedAxis.size() <<*/ "\n\n";
+      cout <<"SpeedX:" <<human[PeopleElement].speed[0] <<" SpeedY:" <<human[PeopleElement].speed[1] <<"\n AxisX" <<human[PeopleElement].Axis[0]<<" AxisY:" <<human[PeopleElement].Axis[1] <<"\n" << "Number of Infected People " << InfectedAxis.size() << "\n\n";
 
       ClearDrawScreen();
-      for(int i=0;i<=PeopleNum-20;i++){
+      DrawBox(0,0,640,480,GetColor(215,215,215),true);
+      for(int i=-1;i<PeopleNum-1;i++){
 
 
         human[i].setAll();
@@ -100,7 +101,7 @@ SetDrawScreen( DX_SCREEN_BACK );
 
 
         //DrawGraph(human[i].Axis[0] ,human[i].Axis[1],humanhandle, FALSE ) ;
-if(human[i].InfectedFlag<=-256||human[i].InfectedFlag>=256){
+        if(human[i].InfectedFlag<=-256||human[i].InfectedFlag>=256){
       //DrawPixel(human[i].Axis[0] ,human[i].Axis[1],GetColor(0,255,0));
       DrawBox(human[i].Axis[0] ,human[i].Axis[1],human[i].Axis[0]+3 ,human[i].Axis[1]+3,GetColor(0,255,0),true) ;
       if(i==PeopleElement)
@@ -120,16 +121,19 @@ DrawBox(human[i].Axis[0] ,human[i].Axis[1],human[i].Axis[0]+3 ,human[i].Axis[1]+
 
 void class_human::virusupdate(){
   if(InfectedFlag>=-255&&InfectedFlag<=255){
+      InfectedAxis[element]=Axis;
     if(InfectedFlag==255){
 
       map<int,_Axis>::iterator itr = InfectedAxis.find(element);
-      cout << "Number" << element << "has fully recovered\n";
+      cout << "Number:" << element << " has fully recovered\n";
       InfectedAxis.erase(itr); //ここで消してくれるはずだが
+      //delete InfectedAxis[element];
+      //InfectedAxis.shrink_to_fit();
     }
     InfectedFlag++;
     //InfectedAxis[element][0]=Axis[0];
     //InfectedAxis[element][1]=Axis[1];
-    InfectedAxis[element]=Axis;
+
 
   }
   else{
