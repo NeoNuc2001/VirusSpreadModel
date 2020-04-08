@@ -2,12 +2,19 @@
 Using　C++　and DxLib to see path,speed and result of virus spreading.
 
 1)If you want to compile on your own
+
  1.Download DxLib and any c++ compiler
+ 
  2.Add DxLib to your compiler's library folder or project folder directly
+ 
  3.compile 
+ 
  4.done
+ 
 2)Don't want to?
+
  1.download VirusMove.exe
+ 
  2.done
  
 How this application works
