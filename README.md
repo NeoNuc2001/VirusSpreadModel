@@ -11,6 +11,7 @@ Using　C++　and DxLib to see path,speed and result of virus spreading.
  
  4.done
  
+ 
 2)Don't want to?
 
  1.download VirusMove.exe
@@ -19,10 +20,13 @@ Using　C++　and DxLib to see path,speed and result of virus spreading.
  
 How this application works
 
+
 1)Set up phase
+
 you are asked to enter number of people and which human to watch(but since using random algorithm, this does do nothing).
 
 then Dxlib opens new window and starts the simulation
+
 
 2)simulation phase
 
@@ -31,6 +35,7 @@ then Dxlib opens new window and starts the simulation
    each AI's box color shows thier symptoms(not how healthy it is). More green less symptoms and more red more symptoms
    
    left top shows first infected AI's box color
+   
    
  ii)How AI works
  
