@@ -33,7 +33,7 @@ then Dxlib opens new window and starts the simulation
 
    left top shows first infected AI's box color
    1.Console
-    This shows certain AI's speed,Axis and total Infected AI's number, Severe AI's number, and dead AI's number.
+    This shows certain AI's speed,Axis,InfectedFlag and total Infected AI's number, Severe AI's number, and dead AI's number.
 
  ii)How AI works
 

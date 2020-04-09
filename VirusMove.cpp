@@ -1,4 +1,4 @@
- #include "DxLib.h"
+#include "DxLib.h"
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
@@ -16,7 +16,7 @@ uniform_int_distribution<> rand480(0, 480);
 
 int minimum_four(int a,int b,int c,int d);
 int PeopleNum,PeopleElement,DeathCount,SeriousCount,Mode;
-int BlockPeopleNumber[16][12]; //１ブロック　40＊40
+int BlockPeopleNumber[16][12]; //?P?u???b?N?@40??40
 class _Axis{
 public:
     int Axis[2];
@@ -65,11 +65,11 @@ public:
 bool SeriousCheck();
 bool LifeCheck();
 using namespace std;
-bool LifeCheck(){//年齢に応じて変える予定
+bool LifeCheck(){//?N??????????????\??
   if(rand()%501<7)return 0;
   else return 1;
 }
-bool SeriousCheck(){//年齢に応じて変える予定
+bool SeriousCheck(){//?N??????????????\??
   if(rand()%11>8)return 1;
   else return 0;
 }
@@ -78,7 +78,7 @@ class_human::class_human(int PullElemet){
   speed[0]=rand()%6-3;
   speed[1]=rand()%6-3;
   Axis[0]=rand()%640;
-  Axis[1]=rand()%480;
+  Axis[1]=rand()%460;
   //cout << "X:" << this->Axis[0] <<"Y:" << this->Axis[1];
   this->InfectedFlag=-256;
   this->AlreadyInfectedFlag=0;
@@ -113,76 +113,76 @@ BlockPeopleNumber[-1+Axis[0]/40][-1+Axis[1]/40]++;
   Axis[1]+=speed[1];
 }
 void class_human::setAcell(){
-  if(Mode==0){//完全ランダム
+  if(Mode==0){//???S?????_??
     if(Axis[0]<=20)Acell[0]=rand()%2+1;
     else if(Axis[0]>=620)Acell[0]=rand()%2-2;
     else Acell[0]=rand()%3-1;
     if(Axis[1]<=20)Acell[1]=rand()%2+1;
     else if(Axis[1]>=460)Acell[1]=rand()%2-2;
     else Acell[1]=rand()%3-1;
- }else if(Mode==1){//対人回避AI　周囲4,3,2ブロックの人の数を調べてもっとも少ないところに行く
-　//端にいるかどうかを調べる
+ }else if(Mode==1){//??l????AI?@????4,3,2?u???b?N??l??????????????????????????s??
+//?[???????????????
    bool CheckArray[2]={0,0};
    if((int)(Axis[0]/40)==0)CheckArray[0]=-1;
    else if((int)(Axis[0]/40)==13)CheckArray[0]=1;
    if((int)(Axis[1]/40)==0)CheckArray[1]=-1;
    else if((int)(Axis[1]/40)==13)CheckArray[1]=1;
 //
-   if(CheckArray[0]==-1){// int minimum_element=minimum_four(BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
-     if(CheckArray[1]==-1){//左上
-       int minimum_element=minimum_four(PeopleNum,PeopleNum,BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
+   if(CheckArray[0]==-1){// int minimum_element=minimum_four(BlockPeopleNumber[-1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
+     if(CheckArray[1]==-1){//????
+       int minimum_element=minimum_four(PeopleNum,PeopleNum,BlockPeopleNumber[1][0],BlockPeopleNumber[0][1]);
        if(minimum_element==1)Acell[0]=rand()%2-2;
        else if(minimum_element==2)Acell[1]=rand()%2+1;
        else if(minimum_element==3)Acell[0]=rand()%2+1;
        else if(minimum_element==4)Acell[1]=rand()%2-2;
-     }else if(CheckArray[1]==1){//左下
-       int minimum_element=minimum_four(PeopleNum,BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],PeopleNum);
+     }else if(CheckArray[1]==1){//????
+       int minimum_element=minimum_four(PeopleNum,BlockPeopleNumber[0][12],BlockPeopleNumber[1][13],PeopleNum);
        if(minimum_element==1)Acell[0]=rand()%2-2;
        else if(minimum_element==2)Acell[1]=rand()%2+1;
        else if(minimum_element==3)Acell[0]=rand()%2+1;
        else if(minimum_element==4)Acell[1]=rand()%2-2;
-     }else{//左
-       int minimum_element=minimum_four(PeopleNum,BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
+     }else{//??
+       int minimum_element=minimum_four(PeopleNum,BlockPeopleNumber[0][-1+Axis[1]/40],BlockPeopleNumber[1][Axis[1]/40],BlockPeopleNumber[0][1+Axis[1]/40]);
        if(minimum_element==1)Acell[0]=rand()%2-2;
        else if(minimum_element==2)Acell[1]=rand()%2+1;
        else if(minimum_element==3)Acell[0]=rand()%2+1;
        else if(minimum_element==4)Acell[1]=rand()%2-2;
      }
    }else if(CheckArray[0]==1){
-     if(CheckArray[1]==-1){//右上
-      int minimum_element=minimum_four(BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],PeopleNum,PeopleNum,BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
+     if(CheckArray[1]==-1){//?E??
+      int minimum_element=minimum_four(BlockPeopleNumber[12][0],PeopleNum,PeopleNum,BlockPeopleNumber[12][1]);
       if(minimum_element==1)Acell[0]=rand()%2-2;
       else if(minimum_element==2)Acell[1]=rand()%2+1;
       else if(minimum_element==3)Acell[0]=rand()%2+1;
       else if(minimum_element==4)Acell[1]=rand()%2-2;
-     }else if(CheckArray[1]==1){//右下
-       int minimum_element=minimum_four(BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],PeopleNum,PeopleNum);
+     }else if(CheckArray[1]==1){//?E??
+       int minimum_element=minimum_four(BlockPeopleNumber[12][0],BlockPeopleNumber[13][12],PeopleNum,PeopleNum);
        if(minimum_element==1)Acell[0]=rand()%2-2;
        else if(minimum_element==2)Acell[1]=rand()%2+1;
        else if(minimum_element==3)Acell[0]=rand()%2+1;
        else if(minimum_element==4)Acell[1]=rand()%2-2;
-     }else{//右
-       int minimum_element=minimum_four(BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],PeopleNum,BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
+     }else{//?E
+       int minimum_element=minimum_four(BlockPeopleNumber[12][Axis[1]/40],BlockPeopleNumber[13][-1+Axis[1]/40],PeopleNum,BlockPeopleNumber[13][1+Axis[1]/40]);
        if(minimum_element==1)Acell[0]=rand()%2-2;
        else if(minimum_element==2)Acell[1]=rand()%2+1;
        else if(minimum_element==3)Acell[0]=rand()%2+1;
        else if(minimum_element==4)Acell[1]=rand()%2-2;
      }
    }else{
-     if(CheckArray[1]==-1){//上
-       int minimum_element=minimum_four(BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],PeopleNum,BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
+     if(CheckArray[1]==-1){//??
+       int minimum_element=minimum_four(BlockPeopleNumber[-1+Axis[0]/40][0],PeopleNum,BlockPeopleNumber[1+Axis[0]/40][0],BlockPeopleNumber[Axis[0]/40][1]);
        if(minimum_element==1)Acell[0]=rand()%2-2;
        else if(minimum_element==2)Acell[1]=rand()%2+1;
        else if(minimum_element==3)Acell[0]=rand()%2+1;
        else if(minimum_element==4)Acell[1]=rand()%2-2;
-     }else if(CheckArray[1]==1){//下
-      int minimum_element=minimum_four(BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],PeopleNum);
+     }else if(CheckArray[1]==1){//??
+      int minimum_element=minimum_four(BlockPeopleNumber[-1+Axis[0]/40][13],BlockPeopleNumber[Axis[0]/40][12],BlockPeopleNumber[1+Axis[0]/40][13],PeopleNum);
       if(minimum_element==1)Acell[0]=rand()%2-2;
       else if(minimum_element==2)Acell[1]=rand()%2+1;
       else if(minimum_element==3)Acell[0]=rand()%2+1;
       else if(minimum_element==4)Acell[1]=rand()%2-2;
-     }else{//中央
-       int minimum_element=minimum_four(BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
+     }else{//????
+       int minimum_element=minimum_four(BlockPeopleNumber[-1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][-1+Axis[1]/40],BlockPeopleNumber[1+Axis[0]/40][Axis[1]/40],BlockPeopleNumber[Axis[0]/40][1+Axis[1]/40]);
        if(minimum_element==1)Acell[0]=rand()%2-2;
        else if(minimum_element==2)Acell[1]=rand()%2+1;
        else if(minimum_element==3)Acell[0]=rand()%2+1;
@@ -197,9 +197,10 @@ void class_human::setAcell(){
 
 
 int main() {
+
 srand((unsigned int)time(NULL));
 
-  SetGraphMode( 639 , 479 , 16 );
+  SetGraphMode( 639 , 479 , 16 );SetAlwaysRunFlag(TRUE);
   cout << "Set number of people\n";
   cin >> PeopleNum ;
   cout << "Set Human to watch( and to be infected)\n";
@@ -259,6 +260,7 @@ DrawBox(human[i].Axis[0] ,human[i].Axis[1],human[i].Axis[0]+3 ,human[i].Axis[1]+
 
       }
       ScreenFlip();
+
     }
   }
   //DxLib_End();
@@ -281,7 +283,7 @@ void class_human::virusupdate(){
 
       map<int,_Axis>::iterator itr = InfectedAxis.find(element);
       cout << "Number:" << element << " has fully recovered\n";
-      InfectedAxis.erase(itr); //ここで消してくれるはずだが
+      InfectedAxis.erase(itr); //???????????????????????
       //delete InfectedAxis[element];
       //InfectedAxis.shrink_to_fit();
     }
@@ -293,7 +295,7 @@ void class_human::virusupdate(){
 
   }
   else{
- if(!InfectedAxis.empty()&&AlreadyInfectedFlag==0){//消えない　Pullしてデバックメッセージを足してみればわかると思う
+ if(!InfectedAxis.empty()&&AlreadyInfectedFlag==0){//????????@Pull????f?o?b?N???b?Z?[?W???????????????v??
     for(map<int,_Axis>::iterator itr = InfectedAxis.begin();itr!=InfectedAxis.end();++itr){
     int LocalInfectedAxis[2]={itr->second.Axis[0],itr->second.Axis[1]};
       if(Distance(Axis,LocalInfectedAxis)<3)givevirus();
@@ -307,9 +309,9 @@ void class_human::virusupdate(){
 int minimum_four(int a,int b,int c,int d){
   int Array[4]={a,b,c,d};
   int CheckArray[2];
-  if(a>b||(a==b&&rand()%2==1)){//bが小さい
+  if(a>b||(a==b&&rand()%2==1)){//b????????
     CheckArray[0]=2;
-  }else if(a<b||(a==b&&rand()%2==1)){//aが小さい
+  }else if(a<b||(a==b&&rand()%2==1)){//a????????
     CheckArray[0]=1;
   }
   if(c>d||(c==d&&rand()%2==1)){
@@ -318,7 +320,7 @@ int minimum_four(int a,int b,int c,int d){
     CheckArray[1]=3;
   }
 
-  if(Array[CheckArray[0]]<Array[CheckArray[1]]||(Array[CheckArray[0]==<Array[CheckArray[1]]&&rand()%2==1)){
+  if(Array[CheckArray[0]]<Array[CheckArray[1]]||(Array[CheckArray[0]]==Array[CheckArray[1]]&&rand()%2==1))
     return CheckArray[0];
   else return CheckArray[1];
   /*
